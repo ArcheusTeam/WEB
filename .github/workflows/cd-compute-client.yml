@@ -1,0 +1,46 @@
+name: Generate OpenAPI Client
+
+on:
+  repository_dispatch:
+    types: [generate-client]
+
+jobs:
+  generate-client:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the WEB repository
+        uses: actions/checkout@v2
+
+      - name: Checkout the API repository
+        uses: actions/checkout@v2
+        with:
+          repository: ArcheusTeam/API
+          path: api-spec
+
+      # Installer OpenAPI Generator CLI
+      - name: Install OpenAPI Generator CLI
+        run: |
+          npm install @openapitools/openapi-generator-cli -g
+
+      # Générer le client OpenAPI dans le repository WEB
+      - name: Generate client with OpenAPI Generator
+        run: |
+          openapi-generator-cli generate -i api-spec/docs/api.yaml -g typescript-fetch -o ./generated-client
+
+      # Configurer Git pour pousser avec un Personal Access Token
+      - name: Set up Git for pushing changes
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git remote set-url origin https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN}}@github.com/ArcheusTeam/WEB.git
+
+      # Commit et push des fichiers générés
+      - name: Push the generated client
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN}}
+        run: |
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/ArcheusTeam/WEB.git
+          git add generated-client
+          git commit -m "Update generated OpenAPI client"
+          git push origin HEAD
