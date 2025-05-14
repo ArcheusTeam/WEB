@@ -29,7 +29,7 @@ jobs:
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           host: 185.161.10.160
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
+          username: ${{ secrets.FTP_SERVER_NAME }}
+          password: ${{ secrets.FTP_SERVER_PASS }}
           remote_folder: /public_html/
           local_folder: ./dist/
