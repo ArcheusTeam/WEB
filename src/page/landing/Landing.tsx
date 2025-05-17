@@ -11,12 +11,11 @@ const Landing = (): JSX.Element => {
         }
     ];
     const navList = [
-        { name: 'A propos', href: '#A propos' },
-        { name: 'Evenement', href: '#Evenement' },
-        { name: 'Graines', href: '/shop/seeds' },
-        { name: 'Plants', href: '/shop/plants' },
-        { name: 'Documents Techniques', href: '/blog' },
-        { name: 'FAQ', href: '#FAQ' },
+        { name: 'A propos', href: '#About' },
+        { name: 'Evenement', href: '#Pricing' },
+        { name: '', href: '/shop/seeds' },
+        { name: '', href: '/shop/plants' },
+        { name: 'Connexion', href: '/login' },
     ];
 
     return (
@@ -24,7 +23,7 @@ const Landing = (): JSX.Element => {
             <NavigationBar elements={navList} />
             <div className="flex flex-col flex-grow">
                 {sections.map((section) => (
-                    <div key={section.id} id={section.id} className="w-full h-full">
+                    <div key={section.id} id={section.id} className="w-full h-full z-10">
                         {section.component}
                     </div>
                 ))}
