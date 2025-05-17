@@ -1,20 +1,22 @@
-import MiniCalendar from "components/calendar/MiniCalendar";
-import WeeklyRevenue from "views/admin/default/components/WeeklyRevenue";
-import TotalSpent from "views/admin/default/components/TotalSpent";
-import PieChartCard from "views/admin/default/components/PieChartCard";
+import CheckTable from "./components/CheckTable";
+import ComplexTable from "./components/ComplexTable";
+import DailyTraffic from "./components/DailyTraffic";
+import PieChartCard from "./components/PieChartCard";
+import TaskCard from "./components/TaskCard";
+import TotalSpent from "./components/TotalSpent";
+import WeeklyRevenue from "./components/WeeklyRevenue";
 import { IoMdHome } from "react-icons/io";
 import { IoDocuments } from "react-icons/io5";
 import { MdBarChart, MdDashboard } from "react-icons/md";
 
-import Widget from "components/widget/Widget";
-import CheckTable from "views/admin/default/components/CheckTable";
-import ComplexTable from "views/admin/default/components/ComplexTable";
-import DailyTraffic from "views/admin/default/components/DailyTraffic";
-import TaskCard from "views/admin/default/components/TaskCard";
+import Widget from "@/components/widget/Widget";
+
 import tableDataCheck from "./variables/tableDataCheck";
 import tableDataComplex from "./variables/tableDataComplex";
+import MiniCalendar from "@/components/calendar/MiniCalendar";
 
-const Dashboard = () => {
+
+const MainDashboard = () => {
   return (
     <div>
       {/* Card widget */}
@@ -91,4 +93,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default MainDashboard;

@@ -1,13 +1,13 @@
 import React from "react";
-import Progress from "components/progress";
-import Card from "components/card";
+import Progress from "@/components/progress";
+import Card from "@/components/card";
 
 import {
   createColumnHelper,
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
-  SortingState,
+  type SortingState,
   useReactTable,
 } from "@tanstack/react-table";
 type RowObj = {

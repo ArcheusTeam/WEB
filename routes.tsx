@@ -1,14 +1,13 @@
 import React from "react";
 
 // Admin Imports
-import MainDashboard from "views/admin/default";
-import NFTMarketplace from "views/admin/marketplace";
-import Profile from "views/admin/profile";
-import DataTables from "views/admin/tables";
-import RTLDefault from "views/rtl/default";
+import NFTMarketplace from "./src/page/admin/marketplace";
+import Profile from "./src/page/admin/profile"
+import DataTables from "./src/page/admin/tables";
+import RTLDefault from "./src/page/rtl/default";
 
 // Auth Imports
-import SignIn from "views/auth/SignIn";
+import SignIn from "./src/page/auth/SignIn";
 
 // Icon Imports
 import {
@@ -18,6 +17,7 @@ import {
   MdPerson,
   MdLock,
 } from "react-icons/md";
+import MainDashboard from "@/page/admin/default";
 
 const routes = [
   {

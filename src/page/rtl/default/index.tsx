@@ -1,16 +1,16 @@
-import MiniCalendar from "components/calendar/MiniCalendar";
-import WeeklyRevenue from "views/admin/default/components/WeeklyRevenue";
-import TotalSpent from "views/admin/default/components/TotalSpent";
-import PieChartCard from "views/admin/default/components/PieChartCard";
+import MiniCalendar from "../../../components/calendar/MiniCalendar";
+import WeeklyRevenue from "../default/components/WeeklyRevenue";
+import TotalSpent from "../default/components/TotalSpent";
+import PieChartCard from "../default/components/PieChartCard";
 import { IoMdHome } from "react-icons/io";
 import { IoDocuments } from "react-icons/io5";
 import { MdBarChart, MdDashboard } from "react-icons/md";
 
-import Widget from "views/rtl/default/components/Widget";
-import CheckTable from "views/rtl/default/components/CheckTable";
-import ComplexTable from "views/rtl/default/components/ComplexTable";
-import DailyTraffic from "views/rtl/default/components/DailyTraffic";
-import TaskCard from "views/rtl/default/components/TaskCard";
+import Widget from "../default/components/Widget";
+import CheckTable from "../default/components/CheckTable";
+import ComplexTable from "../default/components/ComplexTable";
+import DailyTraffic from "../default/components/DailyTraffic";
+import TaskCard from "../default/components/TaskCard";
 import tableDataCheck from "./variables/tableDataCheck";
 import tableDataComplex from "./variables/tableDataComplex";
 

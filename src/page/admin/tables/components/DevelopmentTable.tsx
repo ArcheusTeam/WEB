@@ -1,17 +1,17 @@
 import React from "react";
-import CardMenu from "components/card/CardMenu";
+import CardMenu from "@/components/card/CardMenu";
 import { DiApple } from "react-icons/di";
 import { DiAndroid } from "react-icons/di";
 import { DiWindows } from "react-icons/di";
-import Card from "components/card";
-import Progress from "components/progress";
+import Card from "@/components/card";
+import Progress from "@/components/progress";
 
 import {
   createColumnHelper,
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
-  SortingState,
+  type SortingState,
   useReactTable,
 } from "@tanstack/react-table";
 
