@@ -1,4 +1,3 @@
-.openapi-generator-ignore
 apis/AnalyticsApi.ts
 apis/AuthApi.ts
 apis/GeolocationApi.ts
@@ -12,8 +11,8 @@ models/CreateSessionRequest.ts
 models/GeolocationRequest.ts
 models/GeolocationResponse.ts
 models/LoginRequest.ts
+models/LogoutUserRequest.ts
 models/Offer.ts
-models/RefreshTokenRequest.ts
 models/Role.ts
 models/SendContactFormRequest.ts
 models/SignupRequest.ts
@@ -21,7 +20,6 @@ models/SubscribeToOffer200Response.ts
 models/SubscribeToOfferRequest.ts
 models/SubscribeToOfferRequestCardDetails.ts
 models/SubscribeToOfferRequestMobilePayment.ts
-models/TokenResponse.ts
 models/User.ts
 models/index.ts
 runtime.ts
