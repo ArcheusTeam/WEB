@@ -1,11 +1,11 @@
-import { lazy, StrictMode } from 'react';
+import { StrictMode, Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
+import { RouterProvider } from 'react-router-dom';
+import { routes } from '../routes';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 //import { Loader } from '@/components/loader';
-
-const LandingPage = lazy(() =>
-    import('@/page/landing/Landing').then((m) => ({ default: m.default }))
-);
 
 const rootElement = document.getElementById('root');
 
@@ -18,6 +18,22 @@ createRoot(rootElement).render(
         {/*<Suspense fallback={<Loader />}>
             *<Route path="/home" element={<LandingPage />} />
         </Suspense>*/}
-        <LandingPage />
+        <Suspense fallback={<div className="flex items-center justify-center h-screen">Chargement...</div>}>
+            <RouterProvider router={routes} />
+            {/* Pour utiliser le générateur, décommentez la ligne ci-dessous et commentez LandingPage */}
+            {/* <Generator /> */}
+        </Suspense>
+        <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+        />
     </StrictMode>
 );
