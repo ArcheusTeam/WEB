@@ -1,25 +1,21 @@
+// ✅ VERSION AMÉLIORÉE avec design ergonomique + sélection de l'offre avant paiement
+
 import React, { useState } from 'react';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
+import { CheckCircle, CreditCard, Paypal, Banknote } from 'lucide-react';
 
 const PricingSection: React.FC = () => {
+  const navigate = useNavigate();
   const [isAnnual, setIsAnnual] = useState(false);
+  const [selectedOffer, setSelectedOffer] = useState<string | null>(null);
 
   const pricingTiers = [
     {
+      id: '1',
       name: 'BASIC',
-      description:
-        "Découvre TheEnd.page gratuitement. Accès limité à l'IA et aux options de création.",
+      description: "Découvre TheEnd.page gratuitement. Accès limité à l'IA et aux options de création.",
       monthlyPrice: 0,
       annualPrice: 0,
-      buttonText: 'Essayer gratuitement',
-      buttonVariant: 'secondary' as const,
       badge: 'Découverte',
       badgeColor: 'bg-white text-black',
       bgColor: 'bg-white text-black',
@@ -30,32 +26,11 @@ const PricingSection: React.FC = () => {
       ],
     },
     {
-      name: 'PREMIUM',
-      description:
-        'La version ultime : pour les créateurs les plus inspirés et les fins les plus marquantes.',
-      monthlyPrice: 14.99,
-      annualPrice: 149.99,
-      buttonText: 'Passer à Premium',
-      buttonVariant: 'outline' as const,
-      badge: 'Ultime',
-      badgeColor: 'bg-yellow-400 text-black',
-      bgColor: 'bg-gradient-to-br from-yellow-400 to-yellow-600 text-black',
-      features: [
-        'Tout dans PLATINUM, plus :',
-        'Accès complet à l’IA générationnelle',
-        'Personnalisation avancée (typographies, animations, etc.)',
-        'Boost de visibilité automatique',
-        'Support prioritaire',
-      ],
-    },
-    {
+      id: '2',
       name: 'PLATINUM',
-      description:
-        'Pour ceux qui veulent briller avec plus de puissance, plus de visibilité, plus d’IA.',
+      description: 'Plus de puissance, de visibilité et d’IA.',
       monthlyPrice: 4.99,
       annualPrice: 49.99,
-      buttonText: 'Passer à Platinum',
-      buttonVariant: 'default' as const,
       badge: 'Populaire',
       badgeColor: 'bg-gray-300 text-black',
       bgColor: 'bg-[#d1d5db] text-black',
@@ -63,83 +38,102 @@ const PricingSection: React.FC = () => {
         'Tout dans BASIC, plus :',
         'IA de création plus avancée',
         'Visibilité priorisée dans le Hall of Fame',
-        'Pages de fin avec options visuelles avancées',
+        'Pages de fin visuellement avancées',
+      ],
+    },
+    {
+      id: '3',
+      name: 'PREMIUM',
+      description: 'La version ultime pour les fins les plus marquantes.',
+      monthlyPrice: 14.99,
+      annualPrice: 149.99,
+      badge: 'Ultime',
+      badgeColor: 'bg-yellow-400 text-black',
+      bgColor: 'bg-gradient-to-br from-yellow-400 to-yellow-600 text-black',
+      features: [
+        'Tout dans PLATINUM, plus :',
+        'Accès complet à l’IA générationnelle',
+        'Personnalisation avancée (typographies, animations, etc.)',
+        'Support prioritaire',
       ],
     },
   ];
 
+  const handleContinue = () => {
+    if (!selectedOffer) return;
+    navigate(`/payment?offer=${selectedOffer}&mode=${isAnnual ? 'annual' : 'monthly'}`);
+  };
+
   return (
-    <section className="w-screen h-full bg-gradient-to-b from-black to-black text-white py-20 px-4">
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute top-10 left-10 w-40 h-40 bg-[#7F55B1] rounded-full blur-xl"></div>
-        <div className="absolute bottom-10 right-10 w-40 h-40 bg-green-500 rounded-full blur-xl"></div>
-      </div>
-      {/* Toggle */}
-      <div className="flex justify-center mb-12">
-        <div className="flex items-center gap-4">
-          <span className="text-sm">Mensuel</span>
-          <label className="relative inline-flex items-center cursor-pointer">
-            <input
-              type="checkbox"
-              className="sr-only peer"
-              checked={isAnnual}
-              onChange={() => setIsAnnual(!isAnnual)}
-            />
-            <div className="w-11 h-6 bg-gray-600 rounded-full peer peer-checked:bg-[#7F55B1] transition-colors"></div>
-            <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-5"></div>
-          </label>
-          <span className="text-sm">Annuel</span>
+      <div className="min-h-screen bg-gradient-to-br from-[#1A1A2E] via-[#2E2E4A] to-[#4A2A5E] text-white py-20 px-6">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-center mb-10 animate-fade-in">Choisissez votre abonnement</h1>
+
+          {/* Toggle */}
+          <div className="flex justify-center mb-10">
+            <div className="flex items-center gap-4">
+              <span className="text-sm">Mensuel</span>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input
+                    type="checkbox"
+                    className="sr-only peer"
+                    checked={isAnnual}
+                    onChange={() => setIsAnnual(!isAnnual)}
+                />
+                <div className="w-11 h-6 bg-gray-600 rounded-full peer peer-checked:bg-[#7F55B1] transition-colors"></div>
+                <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-5"></div>
+              </label>
+              <span className="text-sm">Annuel</span>
+            </div>
+          </div>
+
+          {/* Offers */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {pricingTiers.map((tier) => (
+                <div
+                    key={tier.id}
+                    onClick={() => setSelectedOffer(tier.id)}
+                    className={`relative p-6 rounded-2xl transition-transform duration-300 border-2 cursor-pointer shadow-lg hover:scale-[1.02] ${
+                        selectedOffer === tier.id
+                            ? 'border-[#7F55B1] bg-white text-black'
+                            : 'border-transparent bg-gray-900 text-white hover:border-[#7F55B1]'
+                    }`}
+                >
+              <span className={`absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-semibold ${tier.badgeColor}`}>
+                {tier.badge}
+              </span>
+                  <h3 className="text-2xl font-bold mb-2">{tier.name}</h3>
+                  <p className="mb-4 text-sm text-gray-300 min-h-[60px]">{tier.description}</p>
+                  <p className="text-3xl font-bold">
+                    ${isAnnual ? tier.annualPrice : tier.monthlyPrice}
+                    <span className="text-sm font-normal">/{isAnnual ? 'an' : 'mois'}</span>
+                  </p>
+                  <ul className="mt-4 space-y-2 text-sm">
+                    {tier.features.map((feature, i) => (
+                        <li key={i} className="flex items-start gap-2">
+                          <CheckCircle size={16} className="text-[#7F55B1] mt-1" />
+                          <span>{feature}</span>
+                        </li>
+                    ))}
+                  </ul>
+                </div>
+            ))}
+          </div>
+
+          {/* Continue Button */}
+          <div className="mt-12 text-center">
+            <button
+                onClick={handleContinue}
+                disabled={!selectedOffer}
+                className={`py-3 px-8 rounded-full font-semibold transition-transform text-white ${
+                    selectedOffer ? 'bg-[#7F55B1] hover:bg-[#6A4596] hover:scale-105' : 'bg-gray-500 cursor-not-allowed'
+                }`}
+            >
+              Continuer vers le paiement
+            </button>
+          </div>
         </div>
       </div>
-
-      {/* Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-        {pricingTiers.map((tier, _) => (
-          <Card
-            key={tier.name}
-            className={`h-full flex flex-col rounded-2xl shadow-xl border border-white/10 ${tier.bgColor} transition duration-300 hover:scale-105`}
-          >
-            <CardHeader className="relative">
-              {/* Badge */}
-              <div
-                className={`absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-semibold ${tier.badgeColor}`}
-              >
-                {tier.badge}
-              </div>
-              <CardTitle className="text-2xl">{tier.name}</CardTitle>
-              <CardDescription className="text-base mt-2">
-                {tier.description}
-              </CardDescription>
-              <div className="text-4xl font-bold mt-6">
-                ${isAnnual ? tier.annualPrice : tier.monthlyPrice}
-                <span className="text-base font-normal ml-1">
-                  /{isAnnual ? 'an' : 'mois'}
-                </span>
-              </div>
-            </CardHeader>
-
-            <CardContent className="flex-grow flex flex-col justify-between">
-              <div>
-                <Button
-                  variant={tier.buttonVariant}
-                  className="w-full mt-4 cursor-pointer mb-6"
-                >
-                  {tier.buttonText}
-                </Button>
-                <ul className="space-y-3 text-sm">
-                  {tier.features.map((feature, i) => (
-                    <li key={i} className="flex items-center gap-2">
-                      <span className="text-[#7F55B1]">●</span>
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    </section>
   );
 };
 

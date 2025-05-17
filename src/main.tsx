@@ -8,6 +8,7 @@ import {
 } from 'react-router-dom';
 import './index.css';
 import { Loader } from '@/components';
+import PaymentPage from "@/page/Pricing/PaiementPage.tsx";
 
 const LandingPage = lazy(() => import('@/page/landing/Landing'));
 const LoginPage = lazy(() =>
@@ -25,6 +26,7 @@ createRoot(rootElement).render(
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="*" element={<Navigate to="/" />} />
+            <Route path="/payment" element={<PaymentPage />} />
         </Routes>
       </Suspense>
     </Router>
