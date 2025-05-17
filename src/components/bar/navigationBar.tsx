@@ -1,4 +1,5 @@
-import React, {type JSX} from "react";
+import React, { useState } from "react";
+import { HiMenu, HiX } from "react-icons/hi"; // npm install react-icons
 
 interface NavItem {
     name: string;
@@ -8,27 +9,64 @@ interface NavItem {
 interface INavbarProps {
     elements: NavItem[];
 }
-const NavItem = ({ name, href } :NavItem) => {
-    return (
-        <li>
-            <a href={href} className="hover:text-blue-500 transition-colors">
-                {name}
-            </a>
-        </li>
-    );
-};
 
-const NavigationBar: React.FC<INavbarProps> = ({elements}): JSX.Element => {
+const NavigationBar: React.FC<INavbarProps> = ({ elements }) => {
+    const [menuOpen, setMenuOpen] = useState(false);
+
+    const toggleMenu = () => setMenuOpen(!menuOpen);
+
     return (
-        <nav className="w-full sticky top-0 left-0 flex justify-between items-center p-6 bg-transparent text-white z-[50]">
-            <div className="text-2xl font-bold">NJEY</div>
-            <ul className="flex space-x-6">
-                {elements.map(({name, href}, index) => (
-                    <NavItem key={index} name={name} href={href}/>
-                ))}
-            </ul>
+        <nav className="w-full fixed top-0 left-0 z-50 bg-white/5 backdrop-blur-xl border-b border-white/10 text-white shadow-lg">
+            <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+                {/* Logo */}
+                <div className="text-3xl font-bold font-serif tracking-wide drop-shadow-sm">
+                    <span className="text-blue-400">The</span>End.<span className="text-purple-400">Page</span>
+                </div>
+
+                {/* Desktop menu */}
+                <ul className="hidden md:flex space-x-8 items-center">
+                    {elements.map(({ name, href }, index) => (
+                        <li key={index} className="group relative cursor-pointer">
+                            <a
+                                href={href}
+                                className="text-lg font-medium text-white hover:text-blue-400 transition"
+                            >
+                                {name}
+                                <span className="block h-[2px] bg-blue-400 scale-x-0 group-hover:scale-x-100 transition-transform origin-left mt-1"></span>
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+
+                {/* Mobile menu button */}
+                <button
+                    className="md:hidden text-white focus:outline-none"
+                    onClick={toggleMenu}
+                >
+                    {menuOpen ? <HiX size={28} /> : <HiMenu size={28} />}
+                </button>
+            </div>
+
+            {/* Mobile menu dropdown */}
+            {menuOpen && (
+                <div className="md:hidden px-6 pb-4">
+                    <ul className="space-y-4">
+                        {elements.map(({ name, href }, index) => (
+                            <li key={index}>
+                                <a
+                                    href={href}
+                                    className="block text-lg font-medium text-white hover:text-blue-400 transition"
+                                    onClick={() => setMenuOpen(false)} // close on click
+                                >
+                                    {name}
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
         </nav>
     );
 };
 
-export {NavigationBar}
+export { NavigationBar };
