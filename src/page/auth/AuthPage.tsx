@@ -1,9 +1,7 @@
-import {LoginCn} from "@/components/auth";
+import { LoginCn } from '@/components/auth';
 
-const AuthPage = () =>{
-    return(
-        <LoginCn/>
-    )
-}
+const AuthPage = () => {
+  return <LoginCn />;
+};
 
-export { AuthPage }
+export { AuthPage };

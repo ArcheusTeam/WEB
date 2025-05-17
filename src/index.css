@@ -4,7 +4,9 @@
 :root {
   --bg-color: #1a1a1a;
 }
-
+html {
+  scroll-behavior: smooth;
+}
 .perspective-text {
   transform: perspective(500px) rotateY(10deg);
   transition: transform 0.5s ease;

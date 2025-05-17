@@ -1,2 +1,2 @@
-export * from "./authForm.tsx"
-export * from "./loginForm.tsx"
+export * from './authForm.tsx';
+export * from './loginForm.tsx';
