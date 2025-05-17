@@ -18,6 +18,6 @@ createRoot(rootElement).render(
         {/*<Suspense fallback={<Loader />}>
             *<Route path="/home" element={<LandingPage />} />
         </Suspense>*/}
-        <LandingPage />
+        {/* <LandingPage /> */}
     </StrictMode>
 );
