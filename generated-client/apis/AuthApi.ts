@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * Archeus Team dev build the app called -->
+ * Archeus Team dev build the app called --> TheEnd.Page
  * This app was produced to make your dream come true
  *
  * The version of the OpenAPI document: 1.0.0
@@ -17,8 +17,9 @@ import * as runtime from '../runtime';
 import type {
   AuthResponse,
   LoginRequest,
-  LogoutUserRequest,
+  RefreshTokenRequest,
   SignupRequest,
+  TokenResponse,
   User,
 } from '../models/index';
 import {
@@ -26,10 +27,12 @@ import {
     AuthResponseToJSON,
     LoginRequestFromJSON,
     LoginRequestToJSON,
-    LogoutUserRequestFromJSON,
-    LogoutUserRequestToJSON,
+    RefreshTokenRequestFromJSON,
+    RefreshTokenRequestToJSON,
     SignupRequestFromJSON,
     SignupRequestToJSON,
+    TokenResponseFromJSON,
+    TokenResponseToJSON,
     UserFromJSON,
     UserToJSON,
 } from '../models/index';
@@ -38,8 +41,12 @@ export interface LoginUserRequest {
     loginRequest: LoginRequest;
 }
 
-export interface LogoutUserOperationRequest {
-    logoutUserRequest: LogoutUserRequest;
+export interface LogoutUserRequest {
+    refreshTokenRequest: RefreshTokenRequest;
+}
+
+export interface RefreshTokenOperationRequest {
+    refreshTokenRequest: RefreshTokenRequest;
 }
 
 export interface SignupUserRequest {
@@ -124,11 +131,11 @@ export class AuthApi extends runtime.BaseAPI {
     /**
      * Déconnexion utilisateur (invalider le refreshToken)
      */
-    async logoutUserRaw(requestParameters: LogoutUserOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['logoutUserRequest'] == null) {
+    async logoutUserRaw(requestParameters: LogoutUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters['refreshTokenRequest'] == null) {
             throw new runtime.RequiredError(
-                'logoutUserRequest',
-                'Required parameter "logoutUserRequest" was null or undefined when calling logoutUser().'
+                'refreshTokenRequest',
+                'Required parameter "refreshTokenRequest" was null or undefined when calling logoutUser().'
             );
         }
 
@@ -151,7 +158,7 @@ export class AuthApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: LogoutUserRequestToJSON(requestParameters['logoutUserRequest']),
+            body: RefreshTokenRequestToJSON(requestParameters['refreshTokenRequest']),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
@@ -160,8 +167,44 @@ export class AuthApi extends runtime.BaseAPI {
     /**
      * Déconnexion utilisateur (invalider le refreshToken)
      */
-    async logoutUser(requestParameters: LogoutUserOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+    async logoutUser(requestParameters: LogoutUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.logoutUserRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Obtenir un nouveau accessToken via refreshToken
+     */
+    async refreshTokenRaw(requestParameters: RefreshTokenOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TokenResponse>> {
+        if (requestParameters['refreshTokenRequest'] == null) {
+            throw new runtime.RequiredError(
+                'refreshTokenRequest',
+                'Required parameter "refreshTokenRequest" was null or undefined when calling refreshToken().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/auth/token`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: RefreshTokenRequestToJSON(requestParameters['refreshTokenRequest']),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => TokenResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Obtenir un nouveau accessToken via refreshToken
+     */
+    async refreshToken(requestParameters: RefreshTokenOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TokenResponse> {
+        const response = await this.refreshTokenRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**

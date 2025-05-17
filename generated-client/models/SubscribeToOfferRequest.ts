@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * Archeus Team dev build the app called -->
+ * Archeus Team dev build the app called --> TheEnd.Page
  * This app was produced to make your dream come true
  *
  * The version of the OpenAPI document: 1.0.0
@@ -72,8 +72,7 @@ export interface SubscribeToOfferRequest {
  */
 export const SubscribeToOfferRequestPaymentMethodEnum = {
     Card: 'card',
-    Mvola: 'mvola',
-    OrangeMoney: 'orange_money'
+    Mvola: 'mvola'
 } as const;
 export type SubscribeToOfferRequestPaymentMethodEnum = typeof SubscribeToOfferRequestPaymentMethodEnum[keyof typeof SubscribeToOfferRequestPaymentMethodEnum];
 

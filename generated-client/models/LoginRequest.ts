@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * Archeus Team dev build the app called -->
+ * Archeus Team dev build the app called --> TheEnd.Page
  * This app was produced to make your dream come true
  *
  * The version of the OpenAPI document: 1.0.0
@@ -24,7 +24,7 @@ export interface LoginRequest {
      * @type {string}
      * @memberof LoginRequest
      */
-    email: string;
+    username: string;
     /**
      * 
      * @type {string}
@@ -37,7 +37,7 @@ export interface LoginRequest {
  * Check if a given object implements the LoginRequest interface.
  */
 export function instanceOfLoginRequest(value: object): value is LoginRequest {
-    if (!('email' in value) || value['email'] === undefined) return false;
+    if (!('username' in value) || value['username'] === undefined) return false;
     if (!('password' in value) || value['password'] === undefined) return false;
     return true;
 }
@@ -52,7 +52,7 @@ export function LoginRequestFromJSONTyped(json: any, ignoreDiscriminator: boolea
     }
     return {
         
-        'email': json['email'],
+        'username': json['username'],
         'password': json['password'],
     };
 }
@@ -68,7 +68,7 @@ export function LoginRequestToJSONTyped(value?: LoginRequest | null, ignoreDiscr
 
     return {
         
-        'email': value['email'],
+        'username': value['username'],
         'password': value['password'],
     };
 }
