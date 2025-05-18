@@ -4,6 +4,7 @@ import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
 import { SiteHeader } from '@/components/site-header'
 import { Button } from '@/components/ui/button'
 import { useNavigate } from 'react-router-dom'
+import { UploadForm } from '@/components/upload/UploadForm'
 
 /**
  * @param {{
@@ -61,21 +62,12 @@ const UserProfile = ({ user }: {
               </div>
             </div>
 
-            {/* Storage and Upload */}
-            <div className="col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-white rounded-2xl p-6 shadow-md flex flex-col items-start">
-                <div className="text-xl font-semibold mb-2">Your storage</div>
-                <p className="text-sm text-gray-500 mb-4">Supervise your drive space in the easiest way</p>
-                <div className="w-full bg-gray-200 rounded-full h-2 mb-2">
-                  <div className="bg-purple-600 h-2 rounded-full w-[51%]"></div>
-                </div>
-                <p className="text-sm text-gray-500">25.6 GB / 50 GB</p>
-              </div>
-              <div className="bg-white rounded-2xl p-6 shadow-md text-center flex flex-col items-center justify-center">
-                <div className="text-4xl text-purple-600">⬆</div>
-                <p className="font-bold mt-2 text-purple-700">Upload Files</p>
-                <p className="text-xs text-gray-500">PNG, JPG and GIF files are allowed</p>
-              </div>
+            {/* Upload Form */}
+            <div className="col-span-2 bg-white rounded-2xl p-6 shadow-md">
+              <UploadForm onPublish={(content, image) => {
+                // TODO: Implémenter la logique de publication
+                console.log('Publishing:', { content, image });
+              }} />
             </div>
 
             {/* Complete Profile */}

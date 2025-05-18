@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import type { Post, ToneOption } from "../../types";
-
 import AIForm from "../../components/generator/AIForm";
 import GIFGenerator from "../../components/generator/GIFGenerator";
 import { toneConfig } from "../../../utils/toneConfig";
