@@ -19,10 +19,9 @@ function useAuth() {
 
       const response = await authApi.loginUser({ loginRequest: data });
 
-      // Stockage du token
       localStorage.setItem('accessToken', response.accessToken ?? '');
+      localStorage.setItem('refreshToken', response.refreshToken ?? '');
 
-      // Récupération du user
       await fetchCurrentUser();
     } catch (err: any) {
       console.error('Login error:', err);
@@ -40,6 +39,7 @@ function useAuth() {
       const response = await authApi.signupUser({ signupRequest: data });
 
       localStorage.setItem('accessToken', response.accessToken ?? '');
+      localStorage.setItem('refreshToken', response.refreshToken ?? '');
 
       await fetchCurrentUser();
     } catch (err: any) {
@@ -55,13 +55,13 @@ function useAuth() {
       setLoading(true);
       setError(null);
 
+      const refreshToken = localStorage.getItem('refreshToken') || '';
       await authApi.logoutUser({
-        refreshTokenRequest: {
-          refreshToken: '',
-        },
+        refreshTokenRequest: { refreshToken },
       });
 
       localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
       setUser(null);
     } catch (err: any) {
       console.error('Logout error:', err);
