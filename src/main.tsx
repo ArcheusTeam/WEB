@@ -8,11 +8,15 @@ import {
 } from 'react-router-dom';
 import './index.css';
 import { Loader } from '@/components';
-import PaymentPage from "@/page/Pricing/PaiementPage.tsx";
+import PaymentPage from "@/page/pricing/PaiementPage.tsx";
+import {PrivateRoute} from "@/page/routes/PrivateRoutes.tsx";
 
 const LandingPage = lazy(() => import('@/page/landing/Landing'));
 const LoginPage = lazy(() =>
   import('@/page/auth/AuthPage').then((m) => ({ default: m.AuthPage }))
+);
+const AdminPage = lazy(() =>
+    import('@/page/admin/page').then((m) => ({ default: m.Admin }))
 );
 const rootElement = document.getElementById('root');
 if (!rootElement)
@@ -25,8 +29,17 @@ createRoot(rootElement).render(
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/payment" element={<PaymentPage />} />
+          {/*<Route
+              path="/admin"
+              element={
+                <PrivateRoute requiredRole="admin">
+                  <AdminPage />
+                </PrivateRoute>
+              }
+          />*/}
           <Route path="*" element={<Navigate to="/" />} />
-            <Route path="/payment" element={<PaymentPage />} />
+          <Route path="/admin" element={<AdminPage/>} />
         </Routes>
       </Suspense>
     </Router>
