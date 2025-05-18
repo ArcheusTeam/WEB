@@ -61,7 +61,6 @@ export const AuthForm: React.FC<AuthFormProps> = ({
     try {
       let authResponse;
       if (formData.username) {
-        // Signup flow
         authResponse = await signup({
           email: formData.email,
           password: formData.password,
@@ -69,7 +68,6 @@ export const AuthForm: React.FC<AuthFormProps> = ({
         });
         setSuccessMessage('Inscription réussie ! Redirection...');
       } else {
-        // Login flow
         authResponse = await login({
           email: formData.email,
           username: formData.username,
@@ -90,7 +88,6 @@ export const AuthForm: React.FC<AuthFormProps> = ({
     }
   };
 
-  // If already authenticated, don't render the form (optional, since useEffect redirects)
   if (isAuthenticated && user) {
     return null;
   }

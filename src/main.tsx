@@ -11,15 +11,16 @@ import { Loader } from '@/components';
 import PaymentPage from "@/page/pricing/PaiementPage.tsx";
 import { PrivateRoute } from "@/page/routes/PrivateRoutes.tsx";
 
+
 const LandingPage = lazy(() => import('@/page/landing/Landing'));
 const LoginPage = lazy(() =>
     import('@/page/auth/AuthPage').then((m) => ({ default: m.AuthPage }))
 );
 const AdminPage = lazy(() =>
-    import('@/page/admin/page').then((m) => ({ default: m.Admin }))
+  import('@/page/admin/page').then((m) => ({ default: m.Admin }))
 );
 const ProfilePage = lazy(() =>
-    import('@/page/profile/ProfilePage').then((m) => ({ default: m.ProfilePage }))
+    import('@/page/profile/userProfile').then((m) => ({ default: m.UserProfile }))
 );
 
 const rootElement = document.getElementById('root');
