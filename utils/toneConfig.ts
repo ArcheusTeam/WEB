@@ -52,14 +52,13 @@ export const toneConfig: Record<ToneOption, ToneConfig> = {
   },
 };
 
-// Exemples de prompts pour chaque ton
 export const tonePrompts: Record<ToneOption, string> = {
-  dramatique: "Écris un message dramatique à propos de la vie quotidienne",
-  ironique: "Crée un commentaire ironique sur les tendances actuelles",
-  cringe: "Génère un texte cringe qui fait référence aux mèmes actuels",
-  classe: "Rédige un message élégant et sophistiqué",
-  touchant: "Compose un message émouvant qui touche le cœur",
-  absurde: "Invente quelque chose de complètement absurde et décalé",
-  "passif-agressif": "Écris un message passif-agressif sur un inconvénient mineur",
-  honnête: "Exprime une vérité brutalement honnête sur la société",
+  dramatique: "Écris un message dramatique sur la fin d’un projet ou d’une relation, en utilisant des images numériques métaphoriques,pour évoquer la profondeur de la perte.",
+  ironique: "Crée un commentaire ironique sur la manière dont les gens annoncent leur départ d’un projet ou d’une relation aujourd’hui, comme s’il s’agissait d’un statut Instagram ou d’une story éphémère. Utilise un ton léger et provocateur",
+  cringe: "Rédige un texte cringe qui raconte de façon maladroite et exagérément vulgaire comment un événement important — comme une rupture ou une démission — a viré au mème improbable. Inclut des références à des mèmes populaires et des situations gênantes du quotidien",
+  classe: "Rédige un message élégant et poétique sur la notion de fin, en tissant des analogies entre les émotions humaines et des éléments du numérique (flux, sauvegarde, mise à jour). Reste sobre mais touchant",
+  touchant: "Compose un message émouvant qui transforme un moment de rupture ou d’abandon en quelque chose de profondément humain. Mets en avant les sentiments cachés derrière l’écran, avec tendresse et authenticité",
+  absurde: "Invente une histoire totalement absurde dans laquelle une  fin ordinaire se transforme en événement surnaturellement théâtral : rupture, démission ou abandon prennent une tournure absurde et spectaculaire.",
+  "passif-agressif": "Écris un message passif-agressif adressé à quelqu’un qui a rendu une fin plus difficile qu’elle ne devait l’être, en parlant entre les lignes sans jamais être direct. Utilise un langage poli mais chargé de sous-entendus",
+  honnête: "Exprime brutalement et sans fard une vérité inconfortable sur la façon dont notre société traite les fins, qu’il s’agisse de relations, de carrières ou de projets. Sois cru, sincère et percutant",
 };
