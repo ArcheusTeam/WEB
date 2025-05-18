@@ -16,7 +16,9 @@ export default defineConfig(({ mode }) => {
       },
     },
     define: {
-      'process.env': env
+      'process.env.VITE_MISTRAL_API_KEY': env.VITE_MISTRAL_API_KEY,
+      'process.env.VITE_GEMINI_API_KEY': env.VITE_GEMINI_API_KEY,
+      'process.env.VITE_GIPHY_API_KEY': env.VITE_GIPHY_API_KEY
     }
   }
 })

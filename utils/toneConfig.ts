@@ -1,5 +1,17 @@
 import type { ToneConfig, ToneOption } from "../src/types";
 
+// Mapping des GIFs pour chaque ton
+export const toneToGifMap: Record<ToneOption, string> = {
+  dramatique: "https://media.giphy.com/media/l2JhtKtDWYNKdRpoA/giphy.gif", // Personne à genoux dramatique
+  ironique: "https://media.giphy.com/media/Rhhr8D5mKSX7O/giphy.gif", // Eye roll
+  cringe: "https://media.giphy.com/media/WrgAGkGrh0MD1Z2gkO/giphy.gif", // Grimace
+  classe: "https://media.giphy.com/media/3oEduQ3OiH7kZQj3a0/giphy.gif", // Élégant
+  touchant: "https://media.giphy.com/media/ely3apij36BJhoZ234/giphy.gif", // Émotions
+  absurde: "https://media.giphy.com/media/WUZpCaFVBwGEE5s029/giphy.gif", // Bizarre
+  "passif-agressif": "https://media.giphy.com/media/J5gFTnStheH1m/giphy.gif", // Faux sourire
+  honnête: "https://media.giphy.com/media/3o7TKUZfJKUzPLnQ7C/giphy.gif" // Vérité
+};
+
 // Configuration des couleurs et emojis pour chaque ton
 export const toneConfig: Record<ToneOption, ToneConfig> = {
   dramatique: { 

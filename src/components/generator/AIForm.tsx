@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { generatePost } from "../../../utils/ai";
+import { toneToGifMap, toneConfig } from "../../../utils/toneConfig";
 import type { ToneOption, Post } from "../../types";
 
 interface AIFormProps {
@@ -14,12 +15,12 @@ const AIForm: React.FC<AIFormProps> = ({ selectedTone, onPostGenerated }) => {
     setLoading(true);
     const text = await generatePost("", selectedTone as ToneOption);
 
-    const imageUrl = "https://media.giphy.com/media/xUPGcEghH2dZdXvZSw/giphy.gif";
+    const imageUrl = toneToGifMap[selectedTone];
 
     onPostGenerated({
       text,
       gifUrl: imageUrl,
-      emoji: "💡"
+      emoji: toneConfig[selectedTone].emoji
     });
 
     setLoading(false);

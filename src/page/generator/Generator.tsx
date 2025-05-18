@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import type { Post, ToneOption } from "../../types";
 import { toneConfig, tonePrompts } from "../../../utils/toneConfig";
 import AIForm from "../../components/generator/AIForm";
+import GIFGenerator from "../../components/generator/GIFGenerator";
 
 const Generator: React.FC = () => {
   const [selectedTone, setSelectedTone] = useState<ToneOption | null>(null);
@@ -55,6 +56,17 @@ const Generator: React.FC = () => {
                   <div className="text-2xl mb-4">{post.emoji}</div>
                 </div>
               )}
+
+              {/* Générateur de GIF */}
+              <GIFGenerator
+                selectedTone={selectedTone}
+                onGifSelected={(gifUrl) => {
+                  setPost((prevPost) => prevPost && {
+                    ...prevPost,
+                    gifUrl
+                  });
+                }}
+              />
             </div>
           </div>
         )}
