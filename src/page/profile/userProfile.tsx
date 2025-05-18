@@ -2,6 +2,8 @@ import React from 'react'
 import { AppSidebar } from '@/components/app-sidebar'
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
 import { SiteHeader } from '@/components/site-header'
+import { Button } from '@/components/ui/button'
+import { useNavigate } from 'react-router-dom'
 
 /**
  * @param {{
@@ -13,7 +15,16 @@ import { SiteHeader } from '@/components/site-header'
  *   }
  * }} props
  */
-const UserProfile = ({ user }) => {
+const UserProfile = ({ user }: {
+    user: {
+      id: string
+      email: string
+      role: 'user' | 'admin'
+      createdAt: string
+    }
+  }) => {
+  const navigate = useNavigate();
+
   return (
     <SidebarProvider>
       <AppSidebar variant="inset" />
@@ -73,13 +84,15 @@ const UserProfile = ({ user }) => {
               <p className="text-sm text-gray-500 mt-2">
                 Stay on the pulse of distributed projects with an online whiteboard to plan, coordinate and discuss
               </p>
-              <button className="mt-4 px-4 py-2 bg-purple-600 text-white rounded-lg w-full">Publish now</button>
+              <Button className="mt-4 w-full">Publish now</Button>
             </div>
 
             {/* All Projects */}
             <div className="col-span-2 bg-white rounded-2xl p-6 shadow-md mt-6">
               <h3 className="text-lg font-semibold mb-2">Generator</h3>
-              <Button>Generate a Post</Button>
+              <Button onClick={() => navigate('/generator')}>
+                Generate a Post
+              </Button>
             </div>
 
             {/* General Information */}

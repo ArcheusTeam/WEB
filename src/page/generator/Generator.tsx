@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import type { Post, ToneOption } from "../../types";
-import { toneConfig, tonePrompts } from "../../../utils/toneConfig";
+
 import AIForm from "../../components/generator/AIForm";
 import GIFGenerator from "../../components/generator/GIFGenerator";
+import { toneConfig } from "../../../utils/toneConfig";
 
 const Generator: React.FC = () => {
   const [selectedTone, setSelectedTone] = useState<ToneOption | null>(null);
