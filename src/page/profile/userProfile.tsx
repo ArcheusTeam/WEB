@@ -78,23 +78,8 @@ const UserProfile = ({ user }) => {
 
             {/* All Projects */}
             <div className="col-span-2 bg-white rounded-2xl p-6 shadow-md mt-6">
-              <h3 className="text-lg font-semibold mb-2">All projects</h3>
-              <p className="text-sm text-gray-500 mb-4">
-                Here you can find more details about your projects. Keep your user engaged by providing meaningful information.
-              </p>
-              <div className="flex items-center space-x-4">
-                <img
-                  src="https://via.placeholder.com/50"
-                  alt="Project"
-                  className="rounded-lg w-12 h-12"
-                />
-                <div>
-                  <p className="font-medium">Technology behind the Blockchain</p>
-                  <p className="text-sm text-gray-400">
-                    Project #1. <span className="text-purple-600 cursor-pointer">See product details</span>
-                  </p>
-                </div>
-              </div>
+              <h3 className="text-lg font-semibold mb-2">Generator</h3>
+              <Button>Generate a Post</Button>
             </div>
 
             {/* General Information */}

@@ -20,4 +20,9 @@ export default defineConfig({
       'generated-client': path.resolve(__dirname, './generated-client'),
     },
   },
+  define: {
+    'process.env.VITE_MISTRAL_API_KEY': env.VITE_MISTRAL_API_KEY,
+    'process.env.VITE_GEMINI_API_KEY': env.VITE_GEMINI_API_KEY,
+    'process.env.VITE_GIPHY_API_KEY': env.VITE_GIPHY_API_KEY
+  }
 });
