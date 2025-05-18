@@ -58,6 +58,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
       } else {
         await login({
           email: formData.email,
+          username: formData.username,
           password: formData.password,
         });
         setSuccessMessage('Connexion réussie ! Redirection...');

@@ -56,7 +56,7 @@ function useAuth() {
       setError(null);
 
       await authApi.logoutUser({
-        logoutUserRequest: {
+        refreshTokenRequest: {
           refreshToken: '',
         },
       });
