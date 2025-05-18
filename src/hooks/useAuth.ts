@@ -3,6 +3,7 @@ import { AuthApi, Configuration } from 'generated-client';
 import type { LoginRequest, SignupRequest, User } from 'generated-client';
 
 const config = new Configuration({
+  basePath: 'https://api.archeusteam.madagascar.webcup.hodi.host',
   accessToken: () => localStorage.getItem('accessToken') || '',
 });
 const authApi = new AuthApi(config);
@@ -73,11 +74,16 @@ function useAuth() {
 
   const fetchCurrentUser = async () => {
     try {
+      const token = localStorage.getItem('accessToken');
+      if (!token) {
+        throw new Error('No access token found');
+      }
       const currentUser = await authApi.getCurrentUser();
       setUser(currentUser);
     } catch (err: any) {
-      console.error('Erreur récupération user:', err);
+      console.error('Erreur récupération user:', err.message || err);
       setUser(null);
+      setError('Échec de la récupération de l’utilisateur');
     }
   };
 
