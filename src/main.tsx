@@ -9,14 +9,15 @@ import {
 import './index.css';
 import { Loader } from '@/components';
 import PaymentPage from "@/page/pricing/PaiementPage.tsx";
-import {PrivateRoute} from "@/page/routes/PrivateRoutes.tsx";
-
+import { PrivateRoute } from "@/page/routes/PrivateRoutes.tsx";
+import Profiles from './page/profile';
+import Generator from './page/generator/Generator';
 const LandingPage = lazy(() => import('@/page/landing/Landing'));
 const LoginPage = lazy(() =>
   import('@/page/auth/AuthPage').then((m) => ({ default: m.AuthPage }))
 );
 const AdminPage = lazy(() =>
-    import('@/page/admin/page').then((m) => ({ default: m.Admin }))
+  import('@/page/admin/page').then((m) => ({ default: m.Admin }))
 );
 const rootElement = document.getElementById('root');
 if (!rootElement)
@@ -39,7 +40,9 @@ createRoot(rootElement).render(
               }
           />*/}
           <Route path="*" element={<Navigate to="/" />} />
-          <Route path="/admin" element={<AdminPage/>} />
+          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/profile" element={<Profiles />} />
+          <Route path="/generator" element={<Generator />} />
         </Routes>
       </Suspense>
     </Router>
