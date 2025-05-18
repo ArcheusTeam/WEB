@@ -3,6 +3,7 @@ apis/AuthApi.ts
 apis/CommentsApi.ts
 apis/EndPagesApi.ts
 apis/GeolocationApi.ts
+apis/HallOfFameApi.ts
 apis/OpportunitiesApi.ts
 apis/PublicApi.ts
 apis/ReactionsApi.ts
@@ -23,13 +24,10 @@ models/Offer.ts
 models/Opportunity.ts
 models/ReactionInput.ts
 models/RefreshTokenRequest.ts
-models/Role.ts
 models/SendContactFormRequest.ts
 models/SignupRequest.ts
-models/SubscribeToOffer200Response.ts
 models/SubscribeToOfferRequest.ts
-models/SubscribeToOfferRequestCardDetails.ts
-models/SubscribeToOfferRequestMobilePayment.ts
+models/ToggleHallOfFamePageRequest.ts
 models/TokenResponse.ts
 models/User.ts
 models/index.ts

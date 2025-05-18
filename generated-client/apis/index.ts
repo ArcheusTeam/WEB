@@ -5,6 +5,7 @@ export * from './AuthApi';
 export * from './CommentsApi';
 export * from './EndPagesApi';
 export * from './GeolocationApi';
+export * from './HallOfFameApi';
 export * from './OpportunitiesApi';
 export * from './PublicApi';
 export * from './ReactionsApi';
