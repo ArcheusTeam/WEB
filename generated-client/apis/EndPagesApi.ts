@@ -17,12 +17,30 @@ import * as runtime from '../runtime';
 import type {
   EndPage,
   EndPageInput,
+  QuotePageRequest,
+  RepostPage200Response,
+  ToggleLikePage200Response,
+  ToggleLikePageRequest,
+  ToggleSavePage200Response,
+  ToggleSavePageRequest,
 } from '../models/index';
 import {
     EndPageFromJSON,
     EndPageToJSON,
     EndPageInputFromJSON,
     EndPageInputToJSON,
+    QuotePageRequestFromJSON,
+    QuotePageRequestToJSON,
+    RepostPage200ResponseFromJSON,
+    RepostPage200ResponseToJSON,
+    ToggleLikePage200ResponseFromJSON,
+    ToggleLikePage200ResponseToJSON,
+    ToggleLikePageRequestFromJSON,
+    ToggleLikePageRequestToJSON,
+    ToggleSavePage200ResponseFromJSON,
+    ToggleSavePage200ResponseToJSON,
+    ToggleSavePageRequestFromJSON,
+    ToggleSavePageRequestToJSON,
 } from '../models/index';
 
 export interface CreateEndPageRequest {
@@ -40,6 +58,25 @@ export interface GetEndPageRequest {
 export interface ListEndPagesRequest {
     tone?: ListEndPagesToneEnum;
     userId?: string;
+}
+
+export interface QuotePageOperationRequest {
+    id: string;
+    quotePageRequest: QuotePageRequest;
+}
+
+export interface RepostPageRequest {
+    id: string;
+}
+
+export interface ToggleLikePageOperationRequest {
+    id: string;
+    toggleLikePageRequest: ToggleLikePageRequest;
+}
+
+export interface ToggleSavePageOperationRequest {
+    id: string;
+    toggleSavePageRequest: ToggleSavePageRequest;
 }
 
 /**
@@ -165,6 +202,40 @@ export class EndPagesApi extends runtime.BaseAPI {
     }
 
     /**
+     * Récupérer le fil d\'actualité des utilisateurs suivis
+     */
+    async getTimelineRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<EndPage>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/end-pages/timeline`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(EndPageFromJSON));
+    }
+
+    /**
+     * Récupérer le fil d\'actualité des utilisateurs suivis
+     */
+    async getTimeline(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<EndPage>> {
+        const response = await this.getTimelineRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Lister les pages publiques
      */
     async listEndPagesRaw(requestParameters: ListEndPagesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<EndPage>>> {
@@ -195,6 +266,226 @@ export class EndPagesApi extends runtime.BaseAPI {
      */
     async listEndPages(requestParameters: ListEndPagesRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<EndPage>> {
         const response = await this.listEndPagesRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Lister les pages tendance
+     */
+    async listTrendingPagesRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<EndPage>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/end-pages/trending`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(EndPageFromJSON));
+    }
+
+    /**
+     * Lister les pages tendance
+     */
+    async listTrendingPages(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<EndPage>> {
+        const response = await this.listTrendingPagesRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Citer une page dans un nouveau post
+     */
+    async quotePageRaw(requestParameters: QuotePageOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EndPage>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling quotePage().'
+            );
+        }
+
+        if (requestParameters['quotePageRequest'] == null) {
+            throw new runtime.RequiredError(
+                'quotePageRequest',
+                'Required parameter "quotePageRequest" was null or undefined when calling quotePage().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/end-pages/{id}/quote`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: QuotePageRequestToJSON(requestParameters['quotePageRequest']),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => EndPageFromJSON(jsonValue));
+    }
+
+    /**
+     * Citer une page dans un nouveau post
+     */
+    async quotePage(requestParameters: QuotePageOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EndPage> {
+        const response = await this.quotePageRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Reposter une page
+     */
+    async repostPageRaw(requestParameters: RepostPageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<RepostPage200Response>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling repostPage().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/end-pages/{id}/repost`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => RepostPage200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Reposter une page
+     */
+    async repostPage(requestParameters: RepostPageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<RepostPage200Response> {
+        const response = await this.repostPageRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Aimer ou retirer un like sur une page
+     */
+    async toggleLikePageRaw(requestParameters: ToggleLikePageOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ToggleLikePage200Response>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling toggleLikePage().'
+            );
+        }
+
+        if (requestParameters['toggleLikePageRequest'] == null) {
+            throw new runtime.RequiredError(
+                'toggleLikePageRequest',
+                'Required parameter "toggleLikePageRequest" was null or undefined when calling toggleLikePage().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/end-pages/{id}/likes`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ToggleLikePageRequestToJSON(requestParameters['toggleLikePageRequest']),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ToggleLikePage200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Aimer ou retirer un like sur une page
+     */
+    async toggleLikePage(requestParameters: ToggleLikePageOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ToggleLikePage200Response> {
+        const response = await this.toggleLikePageRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Sauvegarder ou retirer une page des favoris
+     */
+    async toggleSavePageRaw(requestParameters: ToggleSavePageOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ToggleSavePage200Response>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling toggleSavePage().'
+            );
+        }
+
+        if (requestParameters['toggleSavePageRequest'] == null) {
+            throw new runtime.RequiredError(
+                'toggleSavePageRequest',
+                'Required parameter "toggleSavePageRequest" was null or undefined when calling toggleSavePage().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/end-pages/{id}/save`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ToggleSavePageRequestToJSON(requestParameters['toggleSavePageRequest']),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ToggleSavePage200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Sauvegarder ou retirer une page des favoris
+     */
+    async toggleSavePage(requestParameters: ToggleSavePageOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ToggleSavePage200Response> {
+        const response = await this.toggleSavePageRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

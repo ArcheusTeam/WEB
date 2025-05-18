@@ -24,31 +24,82 @@ export interface Offer {
      * @type {string}
      * @memberof Offer
      */
-    id?: string;
+    id: string;
     /**
      * 
      * @type {string}
      * @memberof Offer
      */
-    name?: string;
+    name: OfferNameEnum;
     /**
      * 
      * @type {number}
      * @memberof Offer
      */
-    price?: number;
+    price: number;
     /**
      * 
      * @type {string}
      * @memberof Offer
      */
-    description?: string;
+    description: string;
+    /**
+     * Nombre maximum de posts par jour
+     * @type {number}
+     * @memberof Offer
+     */
+    maxPosts: number;
+    /**
+     * Nombre maximum de likes par jour
+     * @type {number}
+     * @memberof Offer
+     */
+    maxLikes: number;
+    /**
+     * Accès aux fonctionnalités premium
+     * @type {boolean}
+     * @memberof Offer
+     */
+    premiumAccess: boolean;
+    /**
+     * Accès au Hall of Fame
+     * @type {boolean}
+     * @memberof Offer
+     */
+    hallOfFameAccess: boolean;
+    /**
+     * Bonus de points pour l'éligibilité au Hall of Fame (0 pour free, 4 pour basic, 6 pour premium)
+     * @type {number}
+     * @memberof Offer
+     */
+    hallOfFameBonus: number;
 }
+
+
+/**
+ * @export
+ */
+export const OfferNameEnum = {
+    Free: 'free',
+    Basic: 'basic',
+    Premium: 'premium'
+} as const;
+export type OfferNameEnum = typeof OfferNameEnum[keyof typeof OfferNameEnum];
+
 
 /**
  * Check if a given object implements the Offer interface.
  */
 export function instanceOfOffer(value: object): value is Offer {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('price' in value) || value['price'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('maxPosts' in value) || value['maxPosts'] === undefined) return false;
+    if (!('maxLikes' in value) || value['maxLikes'] === undefined) return false;
+    if (!('premiumAccess' in value) || value['premiumAccess'] === undefined) return false;
+    if (!('hallOfFameAccess' in value) || value['hallOfFameAccess'] === undefined) return false;
+    if (!('hallOfFameBonus' in value) || value['hallOfFameBonus'] === undefined) return false;
     return true;
 }
 
@@ -62,10 +113,15 @@ export function OfferFromJSONTyped(json: any, ignoreDiscriminator: boolean): Off
     }
     return {
         
-        'id': json['id'] == null ? undefined : json['id'],
-        'name': json['name'] == null ? undefined : json['name'],
-        'price': json['price'] == null ? undefined : json['price'],
-        'description': json['description'] == null ? undefined : json['description'],
+        'id': json['id'],
+        'name': json['name'],
+        'price': json['price'],
+        'description': json['description'],
+        'maxPosts': json['maxPosts'],
+        'maxLikes': json['maxLikes'],
+        'premiumAccess': json['premiumAccess'],
+        'hallOfFameAccess': json['hallOfFameAccess'],
+        'hallOfFameBonus': json['hallOfFameBonus'],
     };
 }
 
@@ -84,6 +140,11 @@ export function OfferToJSONTyped(value?: Offer | null, ignoreDiscriminator: bool
         'name': value['name'],
         'price': value['price'],
         'description': value['description'],
+        'maxPosts': value['maxPosts'],
+        'maxLikes': value['maxLikes'],
+        'premiumAccess': value['premiumAccess'],
+        'hallOfFameAccess': value['hallOfFameAccess'],
+        'hallOfFameBonus': value['hallOfFameBonus'],
     };
 }
 

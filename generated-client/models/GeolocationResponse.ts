@@ -24,25 +24,28 @@ export interface GeolocationResponse {
      * @type {string}
      * @memberof GeolocationResponse
      */
-    country?: string;
+    country: string;
     /**
      * 
      * @type {string}
      * @memberof GeolocationResponse
      */
-    city?: string;
+    city: string;
     /**
      * 
      * @type {string}
      * @memberof GeolocationResponse
      */
-    region?: string;
+    region: string;
 }
 
 /**
  * Check if a given object implements the GeolocationResponse interface.
  */
 export function instanceOfGeolocationResponse(value: object): value is GeolocationResponse {
+    if (!('country' in value) || value['country'] === undefined) return false;
+    if (!('city' in value) || value['city'] === undefined) return false;
+    if (!('region' in value) || value['region'] === undefined) return false;
     return true;
 }
 
@@ -56,9 +59,9 @@ export function GeolocationResponseFromJSONTyped(json: any, ignoreDiscriminator:
     }
     return {
         
-        'country': json['country'] == null ? undefined : json['country'],
-        'city': json['city'] == null ? undefined : json['city'],
-        'region': json['region'] == null ? undefined : json['region'],
+        'country': json['country'],
+        'city': json['city'],
+        'region': json['region'],
     };
 }
 

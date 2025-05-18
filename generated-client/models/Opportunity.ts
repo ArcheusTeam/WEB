@@ -24,31 +24,31 @@ export interface Opportunity {
      * @type {string}
      * @memberof Opportunity
      */
-    id?: string;
+    id: string;
     /**
      * 
      * @type {string}
      * @memberof Opportunity
      */
-    type?: OpportunityTypeEnum;
+    type: OpportunityTypeEnum;
     /**
      * 
      * @type {string}
      * @memberof Opportunity
      */
-    title?: string;
+    title: string;
     /**
      * 
      * @type {string}
      * @memberof Opportunity
      */
-    description?: string;
+    description: string;
     /**
      * 
      * @type {string}
      * @memberof Opportunity
      */
-    url?: string;
+    url: string;
 }
 
 
@@ -68,6 +68,11 @@ export type OpportunityTypeEnum = typeof OpportunityTypeEnum[keyof typeof Opport
  * Check if a given object implements the Opportunity interface.
  */
 export function instanceOfOpportunity(value: object): value is Opportunity {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('type' in value) || value['type'] === undefined) return false;
+    if (!('title' in value) || value['title'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('url' in value) || value['url'] === undefined) return false;
     return true;
 }
 
@@ -81,11 +86,11 @@ export function OpportunityFromJSONTyped(json: any, ignoreDiscriminator: boolean
     }
     return {
         
-        'id': json['id'] == null ? undefined : json['id'],
-        'type': json['type'] == null ? undefined : json['type'],
-        'title': json['title'] == null ? undefined : json['title'],
-        'description': json['description'] == null ? undefined : json['description'],
-        'url': json['url'] == null ? undefined : json['url'],
+        'id': json['id'],
+        'type': json['type'],
+        'title': json['title'],
+        'description': json['description'],
+        'url': json['url'],
     };
 }
 

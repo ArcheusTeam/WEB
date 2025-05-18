@@ -37,6 +37,18 @@ export interface EndPageInput {
      * @memberof EndPageInput
      */
     tone: EndPageInputToneEnum;
+    /**
+     * URL de l'image de la page
+     * @type {string}
+     * @memberof EndPageInput
+     */
+    image?: string | null;
+    /**
+     * Liste des hashtags associés au post
+     * @type {Array<string>}
+     * @memberof EndPageInput
+     */
+    hashtags?: Array<string>;
 }
 
 
@@ -79,6 +91,8 @@ export function EndPageInputFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'title': json['title'],
         'description': json['description'],
         'tone': json['tone'],
+        'image': json['image'] == null ? undefined : json['image'],
+        'hashtags': json['hashtags'] == null ? undefined : json['hashtags'],
     };
 }
 
@@ -96,6 +110,8 @@ export function EndPageInputToJSONTyped(value?: EndPageInput | null, ignoreDiscr
         'title': value['title'],
         'description': value['description'],
         'tone': value['tone'],
+        'image': value['image'],
+        'hashtags': value['hashtags'],
     };
 }
 

@@ -16,14 +16,21 @@
 import * as runtime from '../runtime';
 import type {
   EndPage,
+  GetHallOfFameScore200Response,
   ToggleHallOfFamePageRequest,
 } from '../models/index';
 import {
     EndPageFromJSON,
     EndPageToJSON,
+    GetHallOfFameScore200ResponseFromJSON,
+    GetHallOfFameScore200ResponseToJSON,
     ToggleHallOfFamePageRequestFromJSON,
     ToggleHallOfFamePageRequestToJSON,
 } from '../models/index';
+
+export interface GetHallOfFameScoreRequest {
+    id: string;
+}
 
 export interface ToggleHallOfFamePageOperationRequest {
     id: string;
@@ -34,6 +41,43 @@ export interface ToggleHallOfFamePageOperationRequest {
  * 
  */
 export class HallOfFameApi extends runtime.BaseAPI {
+
+    /**
+     * Calculer le score d\'éligibilité d\'une page pour le Hall of Fame
+     */
+    async getHallOfFameScoreRaw(requestParameters: GetHallOfFameScoreRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetHallOfFameScore200Response>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling getHallOfFameScore().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['id'] != null) {
+            queryParameters['id'] = requestParameters['id'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/hall-of-fame/score`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetHallOfFameScore200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Calculer le score d\'éligibilité d\'une page pour le Hall of Fame
+     */
+    async getHallOfFameScore(requestParameters: GetHallOfFameScoreRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetHallOfFameScore200Response> {
+        const response = await this.getHallOfFameScoreRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
 
     /**
      * Lister les pages du Hall of Fame
@@ -64,7 +108,7 @@ export class HallOfFameApi extends runtime.BaseAPI {
     /**
      * Ajouter ou retirer une page du Hall of Fame (admin only)
      */
-    async toggleHallOfFamePageRaw(requestParameters: ToggleHallOfFamePageOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async toggleHallOfFamePageRaw(requestParameters: ToggleHallOfFamePageOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EndPage>> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -101,14 +145,15 @@ export class HallOfFameApi extends runtime.BaseAPI {
             body: ToggleHallOfFamePageRequestToJSON(requestParameters['toggleHallOfFamePageRequest']),
         }, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => EndPageFromJSON(jsonValue));
     }
 
     /**
      * Ajouter ou retirer une page du Hall of Fame (admin only)
      */
-    async toggleHallOfFamePage(requestParameters: ToggleHallOfFamePageOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.toggleHallOfFamePageRaw(requestParameters, initOverrides);
+    async toggleHallOfFamePage(requestParameters: ToggleHallOfFamePageOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EndPage> {
+        const response = await this.toggleHallOfFamePageRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
 }

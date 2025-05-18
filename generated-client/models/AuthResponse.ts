@@ -24,19 +24,21 @@ export interface AuthResponse {
      * @type {string}
      * @memberof AuthResponse
      */
-    accessToken?: string;
+    accessToken: string;
     /**
      * 
      * @type {string}
      * @memberof AuthResponse
      */
-    refreshToken?: string;
+    refreshToken: string;
 }
 
 /**
  * Check if a given object implements the AuthResponse interface.
  */
 export function instanceOfAuthResponse(value: object): value is AuthResponse {
+    if (!('accessToken' in value) || value['accessToken'] === undefined) return false;
+    if (!('refreshToken' in value) || value['refreshToken'] === undefined) return false;
     return true;
 }
 
@@ -50,8 +52,8 @@ export function AuthResponseFromJSONTyped(json: any, ignoreDiscriminator: boolea
     }
     return {
         
-        'accessToken': json['accessToken'] == null ? undefined : json['accessToken'],
-        'refreshToken': json['refreshToken'] == null ? undefined : json['refreshToken'],
+        'accessToken': json['accessToken'],
+        'refreshToken': json['refreshToken'],
     };
 }
 

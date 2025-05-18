@@ -13,6 +13,14 @@
  */
 
 import { mapValues } from '../runtime';
+import type { User } from './User';
+import {
+    UserFromJSON,
+    UserFromJSONTyped,
+    UserToJSON,
+    UserToJSONTyped,
+} from './User';
+
 /**
  * 
  * @export
@@ -38,29 +46,101 @@ export interface EndPage {
      */
     tone: EndPageToneEnum;
     /**
+     * URL de l'image de la page
+     * @type {string}
+     * @memberof EndPage
+     */
+    image?: string | null;
+    /**
+     * Liste des hashtags associés au post
+     * @type {Array<string>}
+     * @memberof EndPage
+     */
+    hashtags?: Array<string>;
+    /**
      * 
      * @type {string}
      * @memberof EndPage
      */
-    id?: string;
+    id: string;
     /**
      * 
      * @type {Date}
      * @memberof EndPage
      */
-    createdAt?: Date;
+    createdAt: Date;
     /**
      * 
      * @type {string}
      * @memberof EndPage
      */
-    authorId?: string;
+    authorId: string;
+    /**
+     * 
+     * @type {User}
+     * @memberof EndPage
+     */
+    author: User;
     /**
      * Indique si la page est dans le Hall of Fame
      * @type {boolean}
      * @memberof EndPage
      */
-    hallOfFame?: boolean;
+    hallOfFame: boolean;
+    /**
+     * Nombre de likes sur la page
+     * @type {number}
+     * @memberof EndPage
+     */
+    likes: number;
+    /**
+     * Indique si l'utilisateur connecté a aimé la page
+     * @type {boolean}
+     * @memberof EndPage
+     */
+    liked: boolean;
+    /**
+     * Indique si l'utilisateur connecté a sauvegardé la page
+     * @type {boolean}
+     * @memberof EndPage
+     */
+    saved: boolean;
+    /**
+     * Nombre de commentaires sur la page
+     * @type {number}
+     * @memberof EndPage
+     */
+    commentsCount: number;
+    /**
+     * Nombre de reposts de la page
+     * @type {number}
+     * @memberof EndPage
+     */
+    reposts: number;
+    /**
+     * Liste des posts qui citent cette page
+     * @type {Array<EndPage>}
+     * @memberof EndPage
+     */
+    quotes?: Array<EndPage>;
+    /**
+     * ID du post original en cas de repost ou de citation
+     * @type {string}
+     * @memberof EndPage
+     */
+    originalPostId?: string | null;
+    /**
+     * 
+     * @type {EndPage}
+     * @memberof EndPage
+     */
+    originalPost?: EndPage;
+    /**
+     * Score d'éligibilité pour le Hall of Fame
+     * @type {number}
+     * @memberof EndPage
+     */
+    score: number;
 }
 
 
@@ -87,6 +167,17 @@ export function instanceOfEndPage(value: object): value is EndPage {
     if (!('title' in value) || value['title'] === undefined) return false;
     if (!('description' in value) || value['description'] === undefined) return false;
     if (!('tone' in value) || value['tone'] === undefined) return false;
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
+    if (!('authorId' in value) || value['authorId'] === undefined) return false;
+    if (!('author' in value) || value['author'] === undefined) return false;
+    if (!('hallOfFame' in value) || value['hallOfFame'] === undefined) return false;
+    if (!('likes' in value) || value['likes'] === undefined) return false;
+    if (!('liked' in value) || value['liked'] === undefined) return false;
+    if (!('saved' in value) || value['saved'] === undefined) return false;
+    if (!('commentsCount' in value) || value['commentsCount'] === undefined) return false;
+    if (!('reposts' in value) || value['reposts'] === undefined) return false;
+    if (!('score' in value) || value['score'] === undefined) return false;
     return true;
 }
 
@@ -103,10 +194,22 @@ export function EndPageFromJSONTyped(json: any, ignoreDiscriminator: boolean): E
         'title': json['title'],
         'description': json['description'],
         'tone': json['tone'],
-        'id': json['id'] == null ? undefined : json['id'],
-        'createdAt': json['createdAt'] == null ? undefined : (new Date(json['createdAt'])),
-        'authorId': json['authorId'] == null ? undefined : json['authorId'],
-        'hallOfFame': json['hallOfFame'] == null ? undefined : json['hallOfFame'],
+        'image': json['image'] == null ? undefined : json['image'],
+        'hashtags': json['hashtags'] == null ? undefined : json['hashtags'],
+        'id': json['id'],
+        'createdAt': (new Date(json['createdAt'])),
+        'authorId': json['authorId'],
+        'author': UserFromJSON(json['author']),
+        'hallOfFame': json['hallOfFame'],
+        'likes': json['likes'],
+        'liked': json['liked'],
+        'saved': json['saved'],
+        'commentsCount': json['commentsCount'],
+        'reposts': json['reposts'],
+        'quotes': json['quotes'] == null ? undefined : ((json['quotes'] as Array<any>).map(EndPageFromJSON)),
+        'originalPostId': json['originalPostId'] == null ? undefined : json['originalPostId'],
+        'originalPost': json['originalPost'] == null ? undefined : EndPageFromJSON(json['originalPost']),
+        'score': json['score'],
     };
 }
 
@@ -124,10 +227,22 @@ export function EndPageToJSONTyped(value?: EndPage | null, ignoreDiscriminator: 
         'title': value['title'],
         'description': value['description'],
         'tone': value['tone'],
+        'image': value['image'],
+        'hashtags': value['hashtags'],
         'id': value['id'],
-        'createdAt': value['createdAt'] == null ? undefined : ((value['createdAt']).toISOString()),
+        'createdAt': ((value['createdAt']).toISOString()),
         'authorId': value['authorId'],
+        'author': UserToJSON(value['author']),
         'hallOfFame': value['hallOfFame'],
+        'likes': value['likes'],
+        'liked': value['liked'],
+        'saved': value['saved'],
+        'commentsCount': value['commentsCount'],
+        'reposts': value['reposts'],
+        'quotes': value['quotes'] == null ? undefined : ((value['quotes'] as Array<any>).map(EndPageToJSON)),
+        'originalPostId': value['originalPostId'],
+        'originalPost': EndPageToJSON(value['originalPost']),
+        'score': value['score'],
     };
 }
 

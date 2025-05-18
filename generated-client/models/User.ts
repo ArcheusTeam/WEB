@@ -13,6 +13,28 @@
  */
 
 import { mapValues } from '../runtime';
+import type { EndPage } from './EndPage';
+import {
+    EndPageFromJSON,
+    EndPageFromJSONTyped,
+    EndPageToJSON,
+    EndPageToJSONTyped,
+} from './EndPage';
+import type { Follow } from './Follow';
+import {
+    FollowFromJSON,
+    FollowFromJSONTyped,
+    FollowToJSON,
+    FollowToJSONTyped,
+} from './Follow';
+import type { Subscription } from './Subscription';
+import {
+    SubscriptionFromJSON,
+    SubscriptionFromJSONTyped,
+    SubscriptionToJSON,
+    SubscriptionToJSONTyped,
+} from './Subscription';
+
 /**
  * 
  * @export
@@ -24,25 +46,73 @@ export interface User {
      * @type {string}
      * @memberof User
      */
-    id?: string;
+    id: string;
     /**
      * 
      * @type {string}
      * @memberof User
      */
-    email?: string;
+    username: string;
     /**
      * 
      * @type {string}
      * @memberof User
      */
-    role?: UserRoleEnum;
+    email: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof User
+     */
+    role: UserRoleEnum;
     /**
      * 
      * @type {Date}
      * @memberof User
      */
-    createdAt?: Date;
+    createdAt: Date;
+    /**
+     * URL de l'image de profil de l'utilisateur
+     * @type {string}
+     * @memberof User
+     */
+    avatar?: string | null;
+    /**
+     * Nom d'utilisateur
+     * @type {string}
+     * @memberof User
+     */
+    name?: string | null;
+    /**
+     * Biographie de l'utilisateur
+     * @type {string}
+     * @memberof User
+     */
+    bio?: string | null;
+    /**
+     * Liste des utilisateurs qui suivent cet utilisateur
+     * @type {Array<Follow>}
+     * @memberof User
+     */
+    followers?: Array<Follow>;
+    /**
+     * Liste des utilisateurs suivis par cet utilisateur
+     * @type {Array<Follow>}
+     * @memberof User
+     */
+    following?: Array<Follow>;
+    /**
+     * Liste des posts de l'utilisateur
+     * @type {Array<EndPage>}
+     * @memberof User
+     */
+    posts?: Array<EndPage>;
+    /**
+     * 
+     * @type {Subscription}
+     * @memberof User
+     */
+    subscription?: Subscription;
 }
 
 
@@ -60,6 +130,11 @@ export type UserRoleEnum = typeof UserRoleEnum[keyof typeof UserRoleEnum];
  * Check if a given object implements the User interface.
  */
 export function instanceOfUser(value: object): value is User {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('username' in value) || value['username'] === undefined) return false;
+    if (!('email' in value) || value['email'] === undefined) return false;
+    if (!('role' in value) || value['role'] === undefined) return false;
+    if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
     return true;
 }
 
@@ -73,10 +148,18 @@ export function UserFromJSONTyped(json: any, ignoreDiscriminator: boolean): User
     }
     return {
         
-        'id': json['id'] == null ? undefined : json['id'],
-        'email': json['email'] == null ? undefined : json['email'],
-        'role': json['role'] == null ? undefined : json['role'],
-        'createdAt': json['createdAt'] == null ? undefined : (new Date(json['createdAt'])),
+        'id': json['id'],
+        'username': json['username'],
+        'email': json['email'],
+        'role': json['role'],
+        'createdAt': (new Date(json['createdAt'])),
+        'avatar': json['avatar'] == null ? undefined : json['avatar'],
+        'name': json['name'] == null ? undefined : json['name'],
+        'bio': json['bio'] == null ? undefined : json['bio'],
+        'followers': json['followers'] == null ? undefined : ((json['followers'] as Array<any>).map(FollowFromJSON)),
+        'following': json['following'] == null ? undefined : ((json['following'] as Array<any>).map(FollowFromJSON)),
+        'posts': json['posts'] == null ? undefined : ((json['posts'] as Array<any>).map(EndPageFromJSON)),
+        'subscription': json['subscription'] == null ? undefined : SubscriptionFromJSON(json['subscription']),
     };
 }
 
@@ -92,9 +175,17 @@ export function UserToJSONTyped(value?: User | null, ignoreDiscriminator: boolea
     return {
         
         'id': value['id'],
+        'username': value['username'],
         'email': value['email'],
         'role': value['role'],
-        'createdAt': value['createdAt'] == null ? undefined : ((value['createdAt']).toISOString()),
+        'createdAt': ((value['createdAt']).toISOString()),
+        'avatar': value['avatar'],
+        'name': value['name'],
+        'bio': value['bio'],
+        'followers': value['followers'] == null ? undefined : ((value['followers'] as Array<any>).map(FollowToJSON)),
+        'following': value['following'] == null ? undefined : ((value['following'] as Array<any>).map(FollowToJSON)),
+        'posts': value['posts'] == null ? undefined : ((value['posts'] as Array<any>).map(EndPageToJSON)),
+        'subscription': SubscriptionToJSON(value['subscription']),
     };
 }
 

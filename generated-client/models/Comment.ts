@@ -13,6 +13,14 @@
  */
 
 import { mapValues } from '../runtime';
+import type { User } from './User';
+import {
+    UserFromJSON,
+    UserFromJSONTyped,
+    UserToJSON,
+    UserToJSONTyped,
+} from './User';
+
 /**
  * 
  * @export
@@ -24,37 +32,49 @@ export interface Comment {
      * @type {string}
      * @memberof Comment
      */
-    id?: string;
+    id: string;
     /**
      * 
      * @type {string}
      * @memberof Comment
      */
-    pageId?: string;
+    pageId: string;
     /**
      * 
      * @type {string}
      * @memberof Comment
      */
-    authorId?: string;
+    authorId: string;
+    /**
+     * 
+     * @type {User}
+     * @memberof Comment
+     */
+    author: User;
     /**
      * 
      * @type {string}
      * @memberof Comment
      */
-    content?: string;
+    content: string;
     /**
      * 
      * @type {Date}
      * @memberof Comment
      */
-    createdAt?: Date;
+    createdAt: Date;
 }
 
 /**
  * Check if a given object implements the Comment interface.
  */
 export function instanceOfComment(value: object): value is Comment {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('pageId' in value) || value['pageId'] === undefined) return false;
+    if (!('authorId' in value) || value['authorId'] === undefined) return false;
+    if (!('author' in value) || value['author'] === undefined) return false;
+    if (!('content' in value) || value['content'] === undefined) return false;
+    if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
     return true;
 }
 
@@ -68,11 +88,12 @@ export function CommentFromJSONTyped(json: any, ignoreDiscriminator: boolean): C
     }
     return {
         
-        'id': json['id'] == null ? undefined : json['id'],
-        'pageId': json['pageId'] == null ? undefined : json['pageId'],
-        'authorId': json['authorId'] == null ? undefined : json['authorId'],
-        'content': json['content'] == null ? undefined : json['content'],
-        'createdAt': json['createdAt'] == null ? undefined : (new Date(json['createdAt'])),
+        'id': json['id'],
+        'pageId': json['pageId'],
+        'authorId': json['authorId'],
+        'author': UserFromJSON(json['author']),
+        'content': json['content'],
+        'createdAt': (new Date(json['createdAt'])),
     };
 }
 
@@ -90,8 +111,9 @@ export function CommentToJSONTyped(value?: Comment | null, ignoreDiscriminator: 
         'id': value['id'],
         'pageId': value['pageId'],
         'authorId': value['authorId'],
+        'author': UserToJSON(value['author']),
         'content': value['content'],
-        'createdAt': value['createdAt'] == null ? undefined : ((value['createdAt']).toISOString()),
+        'createdAt': ((value['createdAt']).toISOString()),
     };
 }
 

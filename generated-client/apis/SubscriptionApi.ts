@@ -15,14 +15,23 @@
 
 import * as runtime from '../runtime';
 import type {
+  GetSubscriptionBenefits200Response,
+  GetSubscriptionStatus200Response,
   Offer,
   SubscribeToOfferRequest,
+  SubscriptionResponse,
 } from '../models/index';
 import {
+    GetSubscriptionBenefits200ResponseFromJSON,
+    GetSubscriptionBenefits200ResponseToJSON,
+    GetSubscriptionStatus200ResponseFromJSON,
+    GetSubscriptionStatus200ResponseToJSON,
     OfferFromJSON,
     OfferToJSON,
     SubscribeToOfferRequestFromJSON,
     SubscribeToOfferRequestToJSON,
+    SubscriptionResponseFromJSON,
+    SubscriptionResponseToJSON,
 } from '../models/index';
 
 export interface SubscribeToOfferOperationRequest {
@@ -33,6 +42,74 @@ export interface SubscribeToOfferOperationRequest {
  * 
  */
 export class SubscriptionApi extends runtime.BaseAPI {
+
+    /**
+     * Récupérer les avantages de l\'abonnement de l\'utilisateur
+     */
+    async getSubscriptionBenefitsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetSubscriptionBenefits200Response>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/subscription/benefits`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetSubscriptionBenefits200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Récupérer les avantages de l\'abonnement de l\'utilisateur
+     */
+    async getSubscriptionBenefits(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetSubscriptionBenefits200Response> {
+        const response = await this.getSubscriptionBenefitsRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Récupérer le statut d\'abonnement de l\'utilisateur connecté
+     */
+    async getSubscriptionStatusRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetSubscriptionStatus200Response>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/subscription/status`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetSubscriptionStatus200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Récupérer le statut d\'abonnement de l\'utilisateur connecté
+     */
+    async getSubscriptionStatus(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetSubscriptionStatus200Response> {
+        const response = await this.getSubscriptionStatusRaw(initOverrides);
+        return await response.value();
+    }
 
     /**
      * Lister les offres disponibles
@@ -63,7 +140,7 @@ export class SubscriptionApi extends runtime.BaseAPI {
     /**
      * Souscrire à une offre avec paiement
      */
-    async subscribeToOfferRaw(requestParameters: SubscribeToOfferOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async subscribeToOfferRaw(requestParameters: SubscribeToOfferOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SubscriptionResponse>> {
         if (requestParameters['subscribeToOfferRequest'] == null) {
             throw new runtime.RequiredError(
                 'subscribeToOfferRequest',
@@ -93,14 +170,15 @@ export class SubscriptionApi extends runtime.BaseAPI {
             body: SubscribeToOfferRequestToJSON(requestParameters['subscribeToOfferRequest']),
         }, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => SubscriptionResponseFromJSON(jsonValue));
     }
 
     /**
      * Souscrire à une offre avec paiement
      */
-    async subscribeToOffer(requestParameters: SubscribeToOfferOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.subscribeToOfferRaw(requestParameters, initOverrides);
+    async subscribeToOffer(requestParameters: SubscribeToOfferOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SubscriptionResponse> {
+        const response = await this.subscribeToOfferRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
 }

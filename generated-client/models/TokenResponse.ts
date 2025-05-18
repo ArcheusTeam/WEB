@@ -24,13 +24,14 @@ export interface TokenResponse {
      * @type {string}
      * @memberof TokenResponse
      */
-    accessToken?: string;
+    accessToken: string;
 }
 
 /**
  * Check if a given object implements the TokenResponse interface.
  */
 export function instanceOfTokenResponse(value: object): value is TokenResponse {
+    if (!('accessToken' in value) || value['accessToken'] === undefined) return false;
     return true;
 }
 
@@ -44,7 +45,7 @@ export function TokenResponseFromJSONTyped(json: any, ignoreDiscriminator: boole
     }
     return {
         
-        'accessToken': json['accessToken'] == null ? undefined : json['accessToken'],
+        'accessToken': json['accessToken'],
     };
 }
 

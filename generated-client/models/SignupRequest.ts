@@ -30,6 +30,12 @@ export interface SignupRequest {
      * @type {string}
      * @memberof SignupRequest
      */
+    username: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SignupRequest
+     */
     password: string;
 }
 
@@ -38,6 +44,7 @@ export interface SignupRequest {
  */
 export function instanceOfSignupRequest(value: object): value is SignupRequest {
     if (!('email' in value) || value['email'] === undefined) return false;
+    if (!('username' in value) || value['username'] === undefined) return false;
     if (!('password' in value) || value['password'] === undefined) return false;
     return true;
 }
@@ -53,6 +60,7 @@ export function SignupRequestFromJSONTyped(json: any, ignoreDiscriminator: boole
     return {
         
         'email': json['email'],
+        'username': json['username'],
         'password': json['password'],
     };
 }
@@ -69,6 +77,7 @@ export function SignupRequestToJSONTyped(value?: SignupRequest | null, ignoreDis
     return {
         
         'email': value['email'],
+        'username': value['username'],
         'password': value['password'],
     };
 }

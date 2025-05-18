@@ -14,9 +14,52 @@
 
 
 import * as runtime from '../runtime';
+import type {
+  Activity,
+  ToggleFollowUserRequest,
+  User,
+  UserUpdateInput,
+} from '../models/index';
+import {
+    ActivityFromJSON,
+    ActivityToJSON,
+    ToggleFollowUserRequestFromJSON,
+    ToggleFollowUserRequestToJSON,
+    UserFromJSON,
+    UserToJSON,
+    UserUpdateInputFromJSON,
+    UserUpdateInputToJSON,
+} from '../models/index';
 
 export interface DeleteUserRequest {
     id: string;
+}
+
+export interface GetUserRequest {
+    id: string;
+}
+
+export interface GetUsersCommentRequest {
+    pageId: string;
+}
+
+export interface GetUsersReactionRequest {
+    pageId: string;
+    emoji?: string;
+}
+
+export interface SearchUsersRequest {
+    query: string;
+}
+
+export interface ToggleFollowUserOperationRequest {
+    id: string;
+    toggleFollowUserRequest: ToggleFollowUserRequest;
+}
+
+export interface UpdateUserRequest {
+    id: string;
+    userUpdateInput: UserUpdateInput;
 }
 
 /**
@@ -62,6 +105,289 @@ export class UsersApi extends runtime.BaseAPI {
      */
     async deleteUser(requestParameters: DeleteUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.deleteUserRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Récupérer un utilisateur par ID
+     */
+    async getUserRaw(requestParameters: GetUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<User>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling getUser().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/users/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => UserFromJSON(jsonValue));
+    }
+
+    /**
+     * Récupérer un utilisateur par ID
+     */
+    async getUser(requestParameters: GetUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<User> {
+        const response = await this.getUserRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Récupérer les dernières activités de l\'utilisateur connecté
+     */
+    async getUserActivitiesRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Activity>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/users/activities`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ActivityFromJSON));
+    }
+
+    /**
+     * Récupérer les dernières activités de l\'utilisateur connecté
+     */
+    async getUserActivities(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Activity>> {
+        const response = await this.getUserActivitiesRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Récupérer les utilisateurs ayant commenté une page
+     */
+    async getUsersCommentRaw(requestParameters: GetUsersCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<User>>> {
+        if (requestParameters['pageId'] == null) {
+            throw new runtime.RequiredError(
+                'pageId',
+                'Required parameter "pageId" was null or undefined when calling getUsersComment().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['pageId'] != null) {
+            queryParameters['pageId'] = requestParameters['pageId'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/users/comment`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(UserFromJSON));
+    }
+
+    /**
+     * Récupérer les utilisateurs ayant commenté une page
+     */
+    async getUsersComment(requestParameters: GetUsersCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<User>> {
+        const response = await this.getUsersCommentRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Récupérer les utilisateurs ayant réagi à une page
+     */
+    async getUsersReactionRaw(requestParameters: GetUsersReactionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<User>>> {
+        if (requestParameters['pageId'] == null) {
+            throw new runtime.RequiredError(
+                'pageId',
+                'Required parameter "pageId" was null or undefined when calling getUsersReaction().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['pageId'] != null) {
+            queryParameters['pageId'] = requestParameters['pageId'];
+        }
+
+        if (requestParameters['emoji'] != null) {
+            queryParameters['emoji'] = requestParameters['emoji'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/users/reaction`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(UserFromJSON));
+    }
+
+    /**
+     * Récupérer les utilisateurs ayant réagi à une page
+     */
+    async getUsersReaction(requestParameters: GetUsersReactionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<User>> {
+        const response = await this.getUsersReactionRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Rechercher des utilisateurs par nom ou nom d\'utilisateur
+     */
+    async searchUsersRaw(requestParameters: SearchUsersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<User>>> {
+        if (requestParameters['query'] == null) {
+            throw new runtime.RequiredError(
+                'query',
+                'Required parameter "query" was null or undefined when calling searchUsers().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['query'] != null) {
+            queryParameters['query'] = requestParameters['query'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/users/search`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(UserFromJSON));
+    }
+
+    /**
+     * Rechercher des utilisateurs par nom ou nom d\'utilisateur
+     */
+    async searchUsers(requestParameters: SearchUsersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<User>> {
+        const response = await this.searchUsersRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Suivre ou unfollow un utilisateur
+     */
+    async toggleFollowUserRaw(requestParameters: ToggleFollowUserOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling toggleFollowUser().'
+            );
+        }
+
+        if (requestParameters['toggleFollowUserRequest'] == null) {
+            throw new runtime.RequiredError(
+                'toggleFollowUserRequest',
+                'Required parameter "toggleFollowUserRequest" was null or undefined when calling toggleFollowUser().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/users/{id}/follow`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ToggleFollowUserRequestToJSON(requestParameters['toggleFollowUserRequest']),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Suivre ou unfollow un utilisateur
+     */
+    async toggleFollowUser(requestParameters: ToggleFollowUserOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.toggleFollowUserRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Mettre à jour le profil d\'un utilisateur
+     */
+    async updateUserRaw(requestParameters: UpdateUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<User>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling updateUser().'
+            );
+        }
+
+        if (requestParameters['userUpdateInput'] == null) {
+            throw new runtime.RequiredError(
+                'userUpdateInput',
+                'Required parameter "userUpdateInput" was null or undefined when calling updateUser().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/users/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UserUpdateInputToJSON(requestParameters['userUpdateInput']),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => UserFromJSON(jsonValue));
+    }
+
+    /**
+     * Mettre à jour le profil d\'un utilisateur
+     */
+    async updateUser(requestParameters: UpdateUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<User> {
+        const response = await this.updateUserRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
 }
